@@ -31,9 +31,9 @@ export default function Home() {
             percentage: value === tipData.percentage ? 0 : value
         })
 
-        if (customTip.current == document.activeElement) return
-
-        customTip.current.value = ""
+        if (customTip.current !== document.activeElement) {
+            customTip.current.value = ""
+        }
     }
 
     const reset = () => {
