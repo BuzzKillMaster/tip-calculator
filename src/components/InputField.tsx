@@ -1,14 +1,13 @@
-import {IconType} from "react-icons";
-import React, {ReactElement} from "react";
+import React, {ReactNode, KeyboardEvent} from "react";
 
 export default function InputField(props: {
     title: string
     id: string
-    icon: ReactElement<IconType> | undefined;
+    icon: ReactNode
     placeholder: string
     handleChange: (value: number) => void
 }) {
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         // TODO: Prevent this from matching shortscust (i.e. Ctrl + R to refresh)
         if (!event.key.match(/[0-9]/) && event.key.length == 1) event.preventDefault()
     }
