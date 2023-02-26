@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { BsFillPersonFill, BsCurrencyDollar } from "react-icons/bs";
-import React, {useRef, useState} from "react";
+import React, {MutableRefObject, useRef, useState} from "react";
 import InputField from "@/components/InputField";
 import TipSelection from "@/components/TipSelection";
 import PriceOutput from "@/components/PriceOutput";
@@ -13,7 +13,7 @@ const initialTipData: TipData = {
 }
 
 export default function Home() {
-    const customTip = useRef(null)
+    const customTip = useRef() as MutableRefObject<HTMLInputElement>
     const [tipData, setTipData] = useState<TipData>(initialTipData)
 
     // prevent people from ever becoming 0...
@@ -33,8 +33,7 @@ export default function Home() {
 
         if (customTip.current == document.activeElement) return
 
-        // @ts-ignore
-        customTip.current.value = null
+        customTip.current.value = ""
     }
 
     const reset = () => {
