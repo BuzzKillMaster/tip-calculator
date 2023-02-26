@@ -5,6 +5,7 @@ import InputField from "@/components/InputField";
 import TipSelection from "@/components/TipSelection";
 import PriceOutput from "@/components/PriceOutput";
 import TipData from "@/types/TipData";
+import NaNSafe from "@/helpers/NaNSafe";
 
 const initialTipData: TipData = {
     price: 0,
@@ -18,12 +19,8 @@ export default function Home() {
 
     // prevent people from ever becoming 0...
     const numPeople = tipData.people > 0 ? tipData.people : 1
-
-    // ...and price from being null or undefined
-    const realPrice = isNaN(tipData.price) ? 0 : tipData.price
-
-    const tipAmount = isNaN(tipData.percentage) ? 0 : realPrice * tipData.percentage / 100
-    const total = (realPrice + tipAmount) / numPeople
+    const tipAmount = tipData.price * tipData.percentage / 100 / numPeople
+    const total = (tipData.price + (tipAmount * numPeople)) / numPeople
 
     const selectTip = (value: number) => {
         setTipData({
@@ -45,7 +42,6 @@ export default function Home() {
         if (!event.key.match(/[0-9]/) && event.key.length === 1) event.preventDefault()
     }
 
-
     return (
         <>
             <Head>
@@ -60,7 +56,7 @@ export default function Home() {
 
                 <form onSubmit={event => event.preventDefault()} className={"bg-slate-700 rounded-md shadow p-6 max-w-full w-[60rem] gap-6 md:flex"}>
                     <section className={"w-full md:w-1/2 flex flex-col justify-center"}>
-                        <InputField handleChange={(value) => setTipData({...tipData, price: value})} title={"Cost of meal"} icon={<BsCurrencyDollar/>} id={"billInput"} placeholder={"0"}/>
+                        <InputField handleChange={(value) => setTipData({...tipData, price: NaNSafe(value)})} title={"Cost of meal"} icon={<BsCurrencyDollar/>} id={"billInput"} placeholder={"0"}/>
 
                         <h2 className={"text-lg font-bold mb-4 mt-6"}>Tip percentage</h2>
 
@@ -71,10 +67,10 @@ export default function Home() {
                             <TipSelection handleClick={selectTip} value={25} tip={tipData.percentage}/>
                             <TipSelection handleClick={selectTip} value={50} tip={tipData.percentage}/>
 
-                            <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(parseInt(event.target.value))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} type="text" placeholder={"custom"}/>
+                            <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(NaNSafe(parseInt(event.target.value)))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} type="text" placeholder={"custom"}/>
                         </div>
 
-                        <InputField handleChange={(value) => setTipData({...tipData, people: value})} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
+                        <InputField handleChange={(value) => setTipData({...tipData, people: NaNSafe(value)})} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
                     </section>
 
                     <section className={"w-full md:w-1/2 bg-cyan-800 rounded-md p-6 flex flex-col justify-between md:mt-0 mt-6"}>
