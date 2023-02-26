@@ -4,25 +4,32 @@ import React, {useRef, useState} from "react";
 import InputField from "@/components/InputField";
 import TipSelection from "@/components/TipSelection";
 import PriceOutput from "@/components/PriceOutput";
+import TipData from "@/types/TipData";
+
+const initialTipData: TipData = {
+    price: 0,
+    percentage: 0,
+    people: 1
+}
 
 export default function Home() {
     const customTip = useRef(null)
-
-    const [tip, setTip] = useState(0)
-    const [price, setPrice] = useState(0)
-    const [people, setPeople] = useState(1)
+    const [tipData, setTipData] = useState<TipData>(initialTipData)
 
     // prevent people from ever becoming 0...
-    const numPeople = people > 0 ? people : 1
+    const numPeople = tipData.people > 0 ? tipData.people : 1
 
     // ...and price from being null or undefined
-    const realPrice = isNaN(price) ? 0 : price
+    const realPrice = isNaN(tipData.price) ? 0 : tipData.price
 
-    const tipAmount = isNaN(tip) ? 0 : realPrice * tip / 100 / numPeople
+    const tipAmount = isNaN(tipData.percentage) ? 0 : realPrice * tipData.percentage / 100 / numPeople
     const total = (realPrice + tipAmount) / numPeople
 
     const selectTip = (value: number) => {
-        setTip(value == tip ? 0 : value)
+        setTipData({
+            ...tipData,
+            percentage: value === tipData.percentage ? 0 : value
+        })
 
         if (customTip.current == document.activeElement) return
 
@@ -31,9 +38,7 @@ export default function Home() {
     }
 
     const reset = () => {
-        setTip(0)
-        setPrice(0)
-        setPeople(1)
+        setTipData(initialTipData)
     }
 
     const handleCustomTip = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -56,21 +61,21 @@ export default function Home() {
 
                 <form onSubmit={event => event.preventDefault()} className={"bg-slate-700 rounded-md shadow p-6 max-w-full w-[60rem] gap-6 md:flex"}>
                     <section className={"w-full md:w-1/2 flex flex-col justify-center"}>
-                        <InputField handleChange={setPrice} title={"Cost of meal"} icon={<BsCurrencyDollar/>} id={"billInput"} placeholder={"0"}/>
+                        <InputField handleChange={(value) => setTipData({...tipData, price: value})} title={"Cost of meal"} icon={<BsCurrencyDollar/>} id={"billInput"} placeholder={"0"}/>
 
                         <h2 className={"text-lg font-bold mb-4 mt-6"}>Tip percentage</h2>
 
                         <div className={"mb-6 grid grid-cols-2 sm:grid-cols-3 gap-4"}>
-                            <TipSelection handleClick={selectTip} value={5} tip={tip}/>
-                            <TipSelection handleClick={selectTip} value={10} tip={tip}/>
-                            <TipSelection handleClick={selectTip} value={15} tip={tip}/>
-                            <TipSelection handleClick={selectTip} value={25} tip={tip}/>
-                            <TipSelection handleClick={selectTip} value={50} tip={tip}/>
+                            <TipSelection handleClick={selectTip} value={5} tip={tipData.percentage}/>
+                            <TipSelection handleClick={selectTip} value={10} tip={tipData.percentage}/>
+                            <TipSelection handleClick={selectTip} value={15} tip={tipData.percentage}/>
+                            <TipSelection handleClick={selectTip} value={25} tip={tipData.percentage}/>
+                            <TipSelection handleClick={selectTip} value={50} tip={tipData.percentage}/>
 
                             <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(parseInt(event.target.value))} onFocus={(event) => selectTip(parseInt(event.target.value))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} pattern={"0"} type="text" placeholder={"custom"}/>
                         </div>
 
-                        <InputField handleChange={setPeople} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
+                        <InputField handleChange={(value) => setTipData({...tipData, people: value})} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
                     </section>
 
                     <section className={"w-full md:w-1/2 bg-cyan-800 rounded-md p-6 flex flex-col justify-between md:mt-0 mt-6"}>
