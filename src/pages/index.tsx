@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import InputField from "../components/InputField";
 import { BsFillPersonFill, BsCurrencyDollar } from "react-icons/bs";
-import PriceOutput from "../components/PriceOutput";
-import TipSelection from "../components/TipSelection";
 import React, {useRef, useState} from "react";
+import InputField from "@/components/InputField";
+import TipSelection from "@/components/TipSelection";
+import PriceOutput from "@/components/PriceOutput";
 
 export default function Home() {
     const customTip = useRef(null)
