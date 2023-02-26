@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { BsFillPersonFill, BsCurrencyDollar } from "react-icons/bs";
-import React, {MutableRefObject, useRef, useState} from "react";
+import React, {MutableRefObject, useRef, useState, KeyboardEvent} from "react";
 import InputField from "@/components/InputField";
 import TipSelection from "@/components/TipSelection";
 import PriceOutput from "@/components/PriceOutput";
@@ -40,9 +40,9 @@ export default function Home() {
         setTipData(initialTipData)
     }
 
-    const handleCustomTip = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleCustomTip = (event: KeyboardEvent<HTMLInputElement>) => {
         // TODO: Prevent this from matching shortcuts (i.e. Ctrl + R to refresh)
-        if (!event.key.match(/[0-9]/) && event.key.length == 1) event.preventDefault()
+        if (!event.key.match(/[0-9]/) && event.key.length === 1) event.preventDefault()
     }
 
 
@@ -71,7 +71,7 @@ export default function Home() {
                             <TipSelection handleClick={selectTip} value={25} tip={tipData.percentage}/>
                             <TipSelection handleClick={selectTip} value={50} tip={tipData.percentage}/>
 
-                            <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(parseInt(event.target.value))} onFocus={(event) => selectTip(parseInt(event.target.value))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} pattern={"0"} type="text" placeholder={"custom"}/>
+                            <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(parseInt(event.target.value))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} type="text" placeholder={"custom"}/>
                         </div>
 
                         <InputField handleChange={(value) => setTipData({...tipData, people: value})} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
