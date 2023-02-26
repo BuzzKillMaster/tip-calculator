@@ -13,6 +13,8 @@ const initialTipData: TipData = {
     people: 1
 }
 
+const tipValues = [5, 10, 15, 25, 50]
+
 export default function Home() {
     const customTip = useRef() as MutableRefObject<HTMLInputElement>
     const [tipData, setTipData] = useState<TipData>(initialTipData)
@@ -61,11 +63,9 @@ export default function Home() {
                         <h2 className={"text-lg font-bold mb-4 mt-6"}>Tip percentage</h2>
 
                         <div className={"mb-6 grid grid-cols-2 sm:grid-cols-3 gap-4"}>
-                            <TipSelection handleClick={selectTip} value={5} tip={tipData.percentage}/>
-                            <TipSelection handleClick={selectTip} value={10} tip={tipData.percentage}/>
-                            <TipSelection handleClick={selectTip} value={15} tip={tipData.percentage}/>
-                            <TipSelection handleClick={selectTip} value={25} tip={tipData.percentage}/>
-                            <TipSelection handleClick={selectTip} value={50} tip={tipData.percentage}/>
+                            {tipValues.map(value => (
+                                <TipSelection key={value} value={value} tip={tipData.percentage} handleClick={selectTip}/>
+                            ))}
 
                             <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(NaNSafe(parseInt(event.target.value)))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} type="text" placeholder={"custom"}/>
                         </div>
