@@ -22,7 +22,7 @@ export default function Home() {
     // ...and price from being null or undefined
     const realPrice = isNaN(tipData.price) ? 0 : tipData.price
 
-    const tipAmount = isNaN(tipData.percentage) ? 0 : realPrice * tipData.percentage / 100 / numPeople
+    const tipAmount = isNaN(tipData.percentage) ? 0 : realPrice * tipData.percentage / 100
     const total = (realPrice + tipAmount) / numPeople
 
     const selectTip = (value: number) => {
