@@ -39,7 +39,7 @@ export default function Home() {
         setTipData(initialTipData)
     }
 
-    const handleCustomTip = (event: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
         // TODO: Prevent this from matching shortcuts (i.e. Ctrl + R to refresh)
         if (!event.key.match(/[0-9]/) && event.key.length === 1) event.preventDefault()
     }
@@ -58,7 +58,7 @@ export default function Home() {
 
                 <form onSubmit={event => event.preventDefault()} className={"bg-slate-700 rounded-md shadow p-6 max-w-full w-[60rem] gap-6 md:flex"}>
                     <section className={"w-full md:w-1/2 flex flex-col justify-center"}>
-                        <InputField handleChange={(value) => setTipData({...tipData, price: NaNSafe(value)})} title={"Cost of meal"} icon={<BsCurrencyDollar/>} id={"billInput"} placeholder={"0"}/>
+                        <InputField handleKeyDown={handleKeyDown} handleChange={(value) => setTipData({...tipData, price: NaNSafe(value)})} title={"Cost of meal"} icon={<BsCurrencyDollar/>} id={"billInput"} placeholder={"0"}/>
 
                         <h2 className={"text-lg font-bold mb-4 mt-6"}>Tip percentage</h2>
 
@@ -67,10 +67,10 @@ export default function Home() {
                                 <TipSelection key={value} value={value} tip={tipData.percentage} handleClick={selectTip}/>
                             ))}
 
-                            <input ref={customTip} onKeyDown={handleCustomTip} onChange={event => selectTip(NaNSafe(parseInt(event.target.value)))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} type="text" placeholder={"custom"}/>
+                            <input ref={customTip} onKeyDown={handleKeyDown} onChange={event => selectTip(NaNSafe(parseInt(event.target.value)))} className={"bg-cyan-600 rounded-md text-lg font-semibold text-center focus:outline outline-2 outline-cyan-500 valid:bg-slate-600"} type="text" placeholder={"custom"}/>
                         </div>
 
-                        <InputField handleChange={(value) => setTipData({...tipData, people: NaNSafe(value)})} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
+                        <InputField handleKeyDown={handleKeyDown} handleChange={(value) => setTipData({...tipData, people: NaNSafe(value)})} title={"Number of people"} icon={<BsFillPersonFill/>} id={"personInput"} placeholder={"1"}/>
                     </section>
 
                     <section className={"w-full md:w-1/2 bg-cyan-800 rounded-md p-6 flex flex-col justify-between md:mt-0 mt-6"}>
