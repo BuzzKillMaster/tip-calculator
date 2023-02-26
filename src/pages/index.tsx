@@ -75,8 +75,8 @@ export default function Home() {
 
                     <section className={"w-full md:w-1/2 bg-cyan-800 rounded-md p-6 flex flex-col justify-between md:mt-0 mt-6"}>
                         <div>
-                            <PriceOutput title={"Tip Amount"} subtitle={"/ person"} value={tipAmount}/>
-                            <PriceOutput title={"Total"} subtitle={"/ person"} value={total}/>
+                            <PriceOutput title={"Tip Amount"} value={tipAmount}/>
+                            <PriceOutput title={"Total"} value={total}/>
                         </div>
 
                         <button onClick={reset} type={"reset"} className={"w-full bg-cyan-600 hover:bg-cyan-500 px-6 py-4 rounded-md font-bold text-lg"}>Reset</button>
